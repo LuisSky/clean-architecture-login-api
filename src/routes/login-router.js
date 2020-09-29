@@ -19,5 +19,7 @@ module.exports = class LoginRouter {
       return httpResponse.badRequest('password')
     }
     this.authUseCase.auth(email)
+
+    return httpResponse.unauthorizedError()
   }
 }
