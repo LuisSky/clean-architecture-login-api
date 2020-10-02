@@ -1,6 +1,7 @@
 const LoginRouter = require('./login-router.js')
 const MissingParamsError = require('./helpers/missing-param-error.js')
 const UnauthorizedError = require('./helpers/unauthorized-error.js')
+const ServerError = require('./helpers/server-error.js')
 
 const makeSut = () => {
   class AuthUseCaseSpy {
@@ -64,12 +65,14 @@ describe('Login Router', () => {
     const { sut } = makeSut()
     const httpResponse = sut.route({})
     expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
   })
 
   test('Should return 500 if no httpRequest is provided', () => {
     const { sut } = makeSut()
     const httpResponse = sut.route()
     expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
   })
 
   test('Should call AuthUseCase with correct params', () => {
@@ -96,6 +99,7 @@ describe('Login Router', () => {
     }
     const httpResponse = sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
   })
 
   test('Should return 500 if AuthUseCase has no body is provided', () => {
@@ -109,6 +113,7 @@ describe('Login Router', () => {
     }
     const httpResponse = sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
   })
   test('Should return 200 when valid credentials are provided', () => {
     const { sut } = makeSut()
