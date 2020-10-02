@@ -42,6 +42,20 @@ describe('Login Router', () => {
     expect(httpResponse.body).toEqual(new MissingParamsError('password'))
   })
 
+  test('Should received 401 with invalid credentials are provided', () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        email: 'invalid_email@mail.com',
+        password: 'invalid_password'
+      }
+    }
+    const httpResponse = sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(401)
+    expect(httpResponse.body).toEqual(new UnauthorizedError())
+  })
+
   test('Should return 500 if no has body', () => {
     const { sut } = makeSut()
     const httpResponse = sut.route({})
@@ -67,17 +81,29 @@ describe('Login Router', () => {
     expect(authUseCaseSpy.email).toBe(httpRequest.body.email)
   })
 
-  test('Should received 401 with invalid credentials are provided', () => {
-    const { sut } = makeSut()
+  test('Should return 500 if no AuthUseCase is provided', () => {
+    const sut = new LoginRouter()
 
     const httpRequest = {
       body: {
-        email: 'invalid_email@mail.com',
-        password: 'invalid_password'
+        email: 'any_email@mail.com',
+        password: 'any_password'
       }
     }
     const httpResponse = sut.route(httpRequest)
-    expect(httpResponse.statusCode).toBe(401)
-    expect(httpResponse.body).toEqual(new UnauthorizedError())
+    expect(httpResponse.statusCode).toBe(500)
+  })
+
+  test('Should return 500 if AuthUseCase has no body is provided', () => {
+    const sut = new LoginRouter({})
+
+    const httpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
   })
 })
