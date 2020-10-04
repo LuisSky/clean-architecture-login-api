@@ -13,6 +13,7 @@
   },
   "lint-staged": {
     "*.js": [
+      "jest --passWithNoTests",
       "standard --fix",
       "git add"
     ]
