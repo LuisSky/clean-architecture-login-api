@@ -1,5 +1,6 @@
 const LoginRouter = require('./login-router.js')
 const MissingParamsError = require('./helpers/missing-param-error.js')
+const InvalidParamsError = require('./helpers/invalid-param-error.js')
 const UnauthorizedError = require('./helpers/unauthorized-error.js')
 const ServerError = require('./helpers/server-error.js')
 
@@ -63,6 +64,20 @@ describe('Login Router', () => {
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamsError('password'))
+  })
+
+  test('Should return 400 if no valid email is provided', async () => {
+    const { sut, emailValidatorSpy } = makeSut()
+    emailValidatorSpy.isValidEmail = false
+    const httpRequest = {
+      body: {
+        email: 'invalid_email',
+        password: 'any_pass'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamsError('email'))
   })
 
   test('Should received 401 with invalid credentials are provided', async () => {
