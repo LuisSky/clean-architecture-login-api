@@ -14,12 +14,26 @@ const makeSut = () => {
   const authUseCaseSpy = new AuthUseCaseSpy()
   authUseCaseSpy.acessToken = 'valid_token'
 
-  const sut = new LoginRouter(authUseCaseSpy)
+  const emailValidatorSpy = makeEmailValidatorSpy()
+
+  const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy)
 
   return {
     authUseCaseSpy,
-    sut
+    sut,
+    emailValidatorSpy
   }
+}
+
+const makeEmailValidatorSpy = () => {
+  class EmailValidatorSpy {
+    isValid (email) {
+      return this.isValidEmail
+    }
+  }
+  const emailValidatorSpy = new EmailValidatorSpy()
+  emailValidatorSpy.isValidEmail = true
+  return emailValidatorSpy
 }
 
 describe('Login Router', () => {
