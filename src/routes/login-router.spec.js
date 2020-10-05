@@ -4,16 +4,7 @@ const UnauthorizedError = require('./helpers/unauthorized-error.js')
 const ServerError = require('./helpers/server-error.js')
 
 const makeSut = () => {
-  class AuthUseCaseSpy {
-    auth (email, password) {
-      this.email = email
-      this.password = password
-      return this.acessToken
-    }
-  }
-  const authUseCaseSpy = new AuthUseCaseSpy()
-  authUseCaseSpy.acessToken = 'valid_token'
-
+  const authUseCaseSpy = makeAuthUseCaseSpy()
   const emailValidatorSpy = makeEmailValidatorSpy()
 
   const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy)
@@ -23,6 +14,19 @@ const makeSut = () => {
     sut,
     emailValidatorSpy
   }
+}
+
+const makeAuthUseCaseSpy = () => {
+  class AuthUseCaseSpy {
+    auth (email, password) {
+      this.email = email
+      this.password = password
+      return this.acessToken
+    }
+  }
+  const authUseCaseSpy = new AuthUseCaseSpy()
+  authUseCaseSpy.acessToken = 'valid_token'
+  return authUseCaseSpy
 }
 
 const makeEmailValidatorSpy = () => {
