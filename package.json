@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "test:staged": "jest --passWithNoTests"
   },
   "standard": {
     "env": [
@@ -13,7 +14,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "jest --passWithNoTests",
+      "npm run test:staged",
       "standard --fix",
       "git add"
     ]
