@@ -7,7 +7,7 @@
     "test": "jest --silent --colors",
     "test:unit": "npm test -- --watch",
     "test:staged": "npm test -- --passWithNoTests --findRelatedTests --noStackTrace",
-    "test:ci": "npm run test:staged -- --coverage"
+    "test:ci": "npm test -- --coverage"
   },
   "standard": {
     "env": [
