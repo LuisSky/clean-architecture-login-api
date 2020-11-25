@@ -79,24 +79,6 @@ describe('AuthUseCase', () => {
     expect(loadUserByEmailRepositorySpy.email).toBe('any_email@mail.com')
   })
 
-  test('Should trhows if LoadUserByEmailRepository has no load function', async () => {
-    const sut = new AuthUseCase({ loadUserByEmailRepository: {} })
-    const promise = sut.auth('any_email@mail.com', 'any_password')
-    expect(promise).rejects.toThrow(new InvalidParamsError('loadUserByEmailRepository'))
-  })
-
-  test('Should trhows if no LoadUserByEmailRepository is provided', async () => {
-    const sut = new AuthUseCase({})
-    const promise = sut.auth('any_email@mail.com', 'any_password')
-    expect(promise).rejects.toThrow(new MissingParamsError('loadUserByEmailRepository'))
-  })
-
-  test('Should trhows if no dependency is provided', async () => {
-    const sut = new AuthUseCase()
-    const promise = sut.auth('any_email@mail.com', 'any_password')
-    expect(promise).rejects.toThrow()
-  })
-
   test('Should return null if LoadUserByEmailRepository return null', async () => {
     const { sut, loadUserByEmailRepositorySpy } = makeSut()
     loadUserByEmailRepositorySpy.user = null
@@ -132,4 +114,16 @@ describe('AuthUseCase', () => {
     expect(acessToken).toBe(tokenGeneratorSpy.acessToken)
     expect(acessToken).toBeTruthy()
   })
+
+  const templateDependencyInjection = (newData, errorReturn) => {
+    const validData = makeSut()
+    const sut = new AuthUseCase({ ...validData, ...newData })
+    const promise = sut.auth('any_email@mail.com', 'any_password')
+    expect(promise).rejects.toThrow(errorReturn)
+    return true
+  }
+
+  test('Should trhows if LoadUserByEmailRepository has no load function', async () => templateDependencyInjection({ loadUserByEmailRepository: {} }, new InvalidParamsError('loadUserByEmailRepository')))
+  test('Should trhows if no dependency is provided', async () => templateDependencyInjection({ loadUserByEmailRepository: undefined, encrypter: undefined, tokenGenerator: undefined }))
+  test('Should trhows if no LoadUserByEmailRepository is provided', async () => templateDependencyInjection({}, new MissingParamsError('loadUserByEmailRepository')))
 })
