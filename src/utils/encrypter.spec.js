@@ -1,11 +1,6 @@
 const bcrypt = require('bcrypt')
-
-class Encrypter {
-  async compare (value, hash) {
-    const isValid = await bcrypt.compare(value, hash)
-    return isValid
-  }
-}
+const Encrypter = require('./encrypter')
+const { MissingParamsError } = require('./errors')
 
 const makeSut = () => {
   const encrypter = new Encrypter()
@@ -32,5 +27,11 @@ describe('Encrypter', () => {
     await sut.compare('value', 'hashed_value')
     expect(bcrypt.value).toBe('value')
     expect(bcrypt.hash).toBe('hashed_value')
+  })
+
+  test('Should throw if no params are provided', async () => {
+    const sut = makeSut()
+    expect(sut.compare()).rejects.toThrow(new MissingParamsError('value'))
+    expect(sut.compare('value')).rejects.toThrow(new MissingParamsError('hash'))
   })
 })
