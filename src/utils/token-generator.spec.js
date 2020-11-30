@@ -22,9 +22,9 @@ describe('TokenGenerator', () => {
 
   test('Should calls JWT with correct params', async () => {
     const sut = makeSut()
-    const token = await sut.generate('any_id')
+    await sut.generate('any_id')
     expect(jwt.id).toBe('any_id')
-    expect(jwt.token).toBe(token)
+    expect(jwt.secret).toBe(sut.secret)
   })
 
   test('Should return throw if no secret is provided', async () => {
