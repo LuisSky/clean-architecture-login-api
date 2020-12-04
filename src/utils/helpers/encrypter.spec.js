@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const Encrypter = require('./encrypter')
-const { MissingParamsError } = require('./errors')
+const { MissingParamsError } = require('../errors')
 
 const makeSut = () => {
   const encrypter = new Encrypter()

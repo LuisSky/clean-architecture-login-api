@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { MissingParamsError } = require('./errors')
+const { MissingParamsError } = require('../errors')
 const TokenGenerator = require('./token-generator')
 
 const makeSut = () => {
