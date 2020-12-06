@@ -8,7 +8,7 @@ class LoadUserByEmailRepository {
 describe('LoadUserByEmailRepository', () => {
   test('Should return null if load returns null', async () => {
     const sut = new LoadUserByEmailRepository()
-    const user = await sut.load('invalid@mail.com')
+    const user = await sut.load('invalid_email@mail.com')
     expect(user).toBeNull()
   })
 })
