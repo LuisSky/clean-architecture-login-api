@@ -1,3 +1,4 @@
+const { MissingParamsError } = require('../../utils/errors')
 
 module.exports = class LoadUserByEmailRepository {
   constructor (userModel) {
@@ -5,6 +6,9 @@ module.exports = class LoadUserByEmailRepository {
   }
 
   async load (email) {
+    if (!email) {
+      throw new MissingParamsError('email')
+    }
     const user = await this.userModel.findOne({
       email
     }, {
