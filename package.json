@@ -1,11 +1,11 @@
 {
-  "name": "clean-arquitecture-login-api",
+  "name": "clean-architecture-login-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest --silent --colors",
-    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:unit": "npm test -- --watchAll -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --passWithNoTests --findRelatedTests --noStackTrace",
     "test:ci": "npm test -- --coverage"
