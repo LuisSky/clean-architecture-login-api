@@ -189,5 +189,6 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-  preset: '@shelf/jest-mongodb'
+  preset: '@shelf/jest-mongodb',
+  watchPathIgnorePatterns: ['globalConfig']
 }
