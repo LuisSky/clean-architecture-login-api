@@ -70,4 +70,10 @@ describe('UpdateAccessTokenRepository', () => {
     const promise = sut.update('any_id', 'any_token')
     expect(promise).rejects.toThrow()
   })
+
+  test('Should throw if no params are provided', () => {
+    const { sut } = makeSut()
+    expect(sut.update()).rejects.toThrow(new MissingParamsError('userId'))
+    expect(sut.update('any_id')).rejects.toThrow(new MissingParamsError('accessToken'))
+  })
 })
